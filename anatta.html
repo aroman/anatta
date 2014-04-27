@@ -1,0 +1,16 @@
+<head>
+  <title>anatta</title>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <!-- <fb:login_button scope="manage_notifications"></fb:login_button> -->
+  <div class="fb-login-button" data-scope="manage_notifications" data-show-faces="true" data-auto-logout-link="true" data-layout="button_count" data-size="icon" data-max-rows="1"></div>
+  <div id="clock" class="metric">{{> clock}}</div>
+</body>
+
+<template name="clock">
+  <div id="time">{{time}}</div>
+  <br>
+  <div id="date">{{date}}</div>
+</template>

@@ -1,0 +1,21 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "moment": {},
+      "facebook-sdk": {}
+    },
+    "packages": {
+      "moment": {
+        "git": "https://github.com/acreeger/meteor-moment.git",
+        "tag": "v2.5.1",
+        "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
+      },
+      "facebook-sdk": {
+        "git": "https://github.com/hugesuccess/facebook-sdk.git",
+        "tag": "v0.0.44",
+        "commit": "cb71b860085ec6453b61644b31f6351e7de2c1b0"
+      }
+    }
+  }
+}
