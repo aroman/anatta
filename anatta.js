@@ -3,6 +3,7 @@ if (Meteor.isClient) {
   var pollTimer = null;
 
   var checkNotifications = function () {
+    console.log("checkNotifications()");
     FB.api("/me/notifications", function (response) {
       console.log(response);
       if (response && !response.error) {
@@ -10,20 +11,28 @@ if (Meteor.isClient) {
         console.log("Hello!")
         if (!_.isEmpty(response.data)) {
           $("body").css("background-color", "hsl(222.3,36.7%,47.1%)");
+          $("#clock").css("color", "white");
         } else {
           $("body").css("background-color", "white");
+          $("#clock").css("color", "black");
         }
-      } else {
-        alert(response.error)
       }
     });
   }
+
+  var onConnection = function () {
+    pollTimer = Meteor.setInterval(checkNotifications, 2000);
+    $("#mat").fadeOut('slow', function () {
+      $("#clock").fadeIn();
+    });
+    checkNotifications();
+  };
 
   var authStatusChanged = function (response) {
     console.log('in auth.statusChange')
     console.log(response);
     if (response.status === "connected") { // Logged in
-      pollTimer = Meteor.setInterval(checkNotifications, 1000);
+      onConnection();
     }
     else if (response.status === "unknown") { // Logged out
       Meteor.clearInterval(pollTimer);
@@ -41,6 +50,10 @@ if (Meteor.isClient) {
     });
 
     FB.getLoginStatus(function(response) {
+      console.log(response);
+      if (response.status === "connected") {
+        onConnection();
+      }
       FB.Event.subscribe('auth.statusChange', authStatusChanged);
     });
 

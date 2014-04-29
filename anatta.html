@@ -4,8 +4,11 @@
 </head>
 
 <body>
-<div class="fb-login-button" data-scope="manage_notifications" data-max-rows="1" data-size="small" data-show-faces="false" data-auto-logout-link="true"></div>
-  <div id="clock" class="metric">{{> clock}}</div>
+  <div class="fb-login-button" data-scope="manage_notifications" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="true"></div>
+  <div id="deadcenter">
+    <div id="clock" class="metric" style="display:none">{{> clock}}</div>
+    <img id="mat" src="mat.svg" style="width: 200px">
+  </div>
 </body>
 
 <template name="clock">
