@@ -1,22 +1,36 @@
 if (Meteor.isClient) {
 
+  var pollTimer = null;
 
   var checkNotifications = function () {
     FB.api("/me/notifications", function (response) {
-          console.log(response);
-          if (response && !response.error) {
-            window.response = response;
-            console.log("Hello!")
-            if (!_.isEmpty(response.data)) {
-              $("body").css("background-color", "hsl(222.3,36.7%,47.1%)");
-            } else {
-              $("body").css("background-color", "white");
-            }
-          } else {
-            alert(response.error)
-          }
+      console.log(response);
+      if (response && !response.error) {
+        window.response = response;
+        console.log("Hello!")
+        if (!_.isEmpty(response.data)) {
+          $("body").css("background-color", "hsl(222.3,36.7%,47.1%)");
+        } else {
+          $("body").css("background-color", "white");
+        }
+      } else {
+        alert(response.error)
+      }
     });
   }
+
+  var authStatusChanged = function (response) {
+    console.log('in auth.statusChange')
+    console.log(response);
+    if (response.status === "connected") { // Logged in
+      pollTimer = Meteor.setInterval(checkNotifications, 1000);
+    }
+    else if (response.status === "unknown") { // Logged out
+      Meteor.clearInterval(pollTimer);
+    } else { // No idea
+      alert("wtf, response.status = " + response.status);
+    }
+  };
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -27,13 +41,7 @@ if (Meteor.isClient) {
     });
 
     FB.getLoginStatus(function(response) {
-      console.log(response);
-      if (response.status === 'connected') {
-        $(".fb-login-button").hide();
-        Meteor.setInterval(checkNotifications, 1000);
-      } else {
-        console.log("Facebook log-in failed :(")
-      }
+      FB.Event.subscribe('auth.statusChange', authStatusChanged);
     });
 
   };
